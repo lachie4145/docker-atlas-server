@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+
+  redis:
+    image: redis:3.2
+    command: redis-server --appendonly yes --requirepass 269f7df4-4cf3-4b2f-8e33-53ed126d4cd1
+    volumes:
+      - "${HOST_PATH}/redis:/data"
+    ports:
+      - "6379:6379"
+        
+  atlas-A1:
+    image: atlas-server
+    tty: true
+    command: start-server Ocean?ServerAdminPassword={$ADMIN_PASS}?ServerX=0?ServerY=0?MaxPlayers=10?ReservedPlayerSlots=5?QueryPort=57555?Port=5755?RCONEnabled=true?RCONPort=28000?SeamlessIP=${EXTERNAL_IP} -NoBattlEye -log -server
+    ports:
+      - "57500:57500/udp"
+      - "5700:5700/udp"
+      - "27000:27000"
+    volumes:
+      - "${HOST_PATH}:/mnt/atlas-server/"
+    depends_on:
+      - redis
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '4'
+          memory: 4G
