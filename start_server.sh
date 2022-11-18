@@ -1,5 +1,6 @@
 #!/bin/bash
 
+GAME_PATH="/home/game/atlas-server"
 ADMIN_PASS="123"
 PUBLIC_IP="10.0.0.49"
 
@@ -12,5 +13,5 @@ SETTINGS_STRING="Ocean?ServerAdminPassword=$ADMIN_PASS?ServerX=0?ServerY=0?MaxPl
   
 docker run -d -t --name=atlas-server \
 --net=host \
--v /home/game/atlas-server:/mnt/atlas-server \
+-v $GAME_PATH:/mnt/atlas-server \
 atlas-server start-server $SETTINGS_STRING
